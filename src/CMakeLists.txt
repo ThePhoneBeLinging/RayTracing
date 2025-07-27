@@ -3,8 +3,13 @@ project(LibRayTracer)
 
 set(CMAKE_CXX_STANDARD 23)
 
-add_library(LibRayTracer main.cpp)
+add_library(LibRayTracer
+        LibRayTracer.cpp
+        )
 
-target_link_libraries(LibRayTracer PUBLIC
+if (APPLE)
+    target_link_libraries(LibRayTracer PUBLIC
         LibAppleMetal)
+endif ()
 target_link_libraries(LibRayTracer PUBLIC raylib)
+target_include_directories(LibRayTracer PUBLIC include)

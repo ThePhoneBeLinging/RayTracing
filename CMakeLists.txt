@@ -2,16 +2,23 @@ cmake_minimum_required(VERSION 3.31)
 project(RayTracer)
 
 set(CMAKE_CXX_STANDARD 23)
+add_subdirectory(src)
+add_executable(RayTracer main.cpp)
 
 include(FetchContent)
 
-FetchContent_Declare(
+if (APPLE)
+    FetchContent_Declare(
         AppleMetal
         GIT_REPOSITORY https://github.com/ThePhoneBeLinging/AppleMetal
         GIT_TAG main
-)
+    )
 
-FetchContent_MakeAvailable(AppleMetal)
+    FetchContent_MakeAvailable(AppleMetal)
+
+    target_link_libraries(RayTracer PUBLIC LibAppleMetal)
+
+endif ()
 
 set(RAYLIB_VERSION 5.0)
 FetchContent_Declare(
@@ -26,6 +33,4 @@ if (NOT raylib_POPULATED) # Have we downloaded raylib yet?
     FetchContent_MakeAvailable(raylib)
 endif ()
 
-add_executable(RayTracer main.cpp)
-
-target_link_libraries(RayTracer PUBLIC LibAppleMetal raylib)
+target_link_libraries(RayTracer PUBLIC raylib)

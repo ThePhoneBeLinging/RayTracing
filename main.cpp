@@ -11,27 +11,14 @@ int main()
   auto apple = AppleMetal();
   std::vector<EAL::Ray> rays;
   rays.resize(screenWidth*screenHeight);
-
+  std::unique_ptr<EAL::Image> image = std::make_unique<EAL::Image>(screenWidth,screenHeight);
   while (not WindowShouldClose())
   {
-    for (int i = 0; i < screenWidth*screenHeight; i++)
-    {
-      rays[i].vector = {255,255,255};
-    }
-    auto result = apple.computeWithShader(rays,{});
-    std::vector<Color> colors;
-    colors.resize(screenWidth*screenHeight);
-    for (int i = 0; i < result.size(); i++)
-    {
-      auto localResult = result[i];
-      colors[i].r = localResult.x;
-      colors[i].g = localResult.y;
-      colors[i].b = localResult.z;
-      colors[i].a = 255;
-    }
+    apple.computeWithShader(rays,{},image.get());
     BeginDrawing();
-    UpdateTexture(texture,colors.data());
-    DrawTexture(texture,0,0,WHITE);
+    image->updateTexture();
+    image->draw();
+
     DrawFPS(0,0);
     EndDrawing();
   }
