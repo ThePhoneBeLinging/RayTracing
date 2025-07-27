@@ -12,6 +12,7 @@ class LibRayTracer
 {
 public:
   LibRayTracer();
+  void initShader();
   void launch();
 private:
   std::unique_ptr<EAL::Image> image_;

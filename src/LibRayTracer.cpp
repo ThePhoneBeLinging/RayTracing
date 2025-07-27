@@ -4,22 +4,35 @@
 
 #include "LibRayTracer/LibRayTracer.hpp"
 #include "raylib.h"
-#include "AppleMetal/AppleMetal.hpp"
 #include "LibRayTracer/Environenment.h"
 
 LibRayTracer::LibRayTracer()
 {
   InitWindow(Environenment::screenWidth, Environenment::screenHeight,"TITLE");
+  initShader();
   image_ = std::make_unique<EAL::Image>(Environenment::screenWidth, Environenment::screenHeight);
-  shader_ = std::make_unique<AppleMetal>();
 }
 
+#ifdef __APPLE__
+#include "AppleMetal/AppleMetal.hpp"
+void LibRayTracer::initShader()
+{
+  shader_ = std::make_unique<AppleMetal>();
+}
+#else
+{
+  void LibRayTracer::initShader()
+  {
+
+  }
+}
+#endif
 void LibRayTracer::launch()
 {
   std::vector<EAL::Ray> rays;
   rays.resize(Environenment::screenWidth * Environenment::screenHeight);
 
-  std::vector<EAL::Sphere> spheres;
+  std::vector<EAL::Sphere> spheres(0);
 
   while (not WindowShouldClose())
   {
