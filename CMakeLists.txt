@@ -34,3 +34,4 @@ if (NOT raylib_POPULATED) # Have we downloaded raylib yet?
 endif ()
 
 target_link_libraries(RayTracer PUBLIC raylib)
+target_link_libraries(RayTracer PUBLIC LibRayTracer)
